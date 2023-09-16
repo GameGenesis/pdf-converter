@@ -1,7 +1,7 @@
 import os
-from tkinter import StringVar, TOP, filedialog, ttk
+from tkinter import StringVar, TOP, filedialog
 from tkinterdnd2 import TkinterDnD, DND_ALL, DND_FILES
-from PIL import Image
+from PIL import Image, ImageGrab
 import customtkinter
 
 class Tk(customtkinter.CTk, TkinterDnD.DnDWrapper):
@@ -13,11 +13,7 @@ app = Tk()
 app.title("Live Laugh Love PDF Converter")
 app.geometry("800x600")
 
-def openfile():
-    filePaths = list(filedialog.askopenfilenames(initialdir = "/",title = "Select file",
-                        filetypes = (("PNG Files","*.png"),("JPG Files","*.jpg"),("JPEG Files","*.jpeg"),("All Files","*.*"))))
-    pathLabel.configure(text=filePaths)
-
+def displayImages(filePaths):
     index = 0
     max_height = 130
     for path in filePaths:
@@ -28,6 +24,12 @@ def openfile():
         label = customtkinter.CTkLabel(master=frame, image=image, text='')
         label.grid(column=index, row=0, padx=5, pady=10)
         index += 1
+
+def openfile():
+    filePaths = list(filedialog.askopenfilenames(initialdir = "/",title = "Select file",
+                        filetypes = (("PNG Files","*.png"),("JPG Files","*.jpg"),("JPEG Files","*.jpeg"),("All Files","*.*"))))
+    pathLabel.configure(text=filePaths)
+    displayImages(filePaths)
 
 def get_path(event):
     pathLabel.configure(text=event.data)
