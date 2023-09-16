@@ -1,7 +1,7 @@
 # Importing Libraries
-from tkinter import*
+from tkinter import CENTER, TOP, Label, PhotoImage
 import customtkinter
-
+from PIL import Image, ImageTk 
 
 # Themes
 customtkinter.set_appearance_mode("light")
@@ -9,28 +9,31 @@ customtkinter.set_default_color_theme("blue")
 
 # Window
 root = customtkinter.CTk()
+root.title("Mr.Converter")
 
-Label(root, text = "Converter", font=('Roboto', 60)).pack(side=TOP, pady = 10)
+# Title
+Label(root, text = "Mr.Converter", font=('Roboto', 60)).pack(side=TOP, pady = 10)
+
+# Image
+image = PhotoImage(file = "Button_Image3.png")
+
+
+
 
 
 
 # Window dimensions 
 root.geometry('800x600')
-
+frame = customtkinter.CTkFrame(master=root, width=600, height=600)
 # button imp to pdf
-iToPButton = customtkinter.CTkButton(master=root, 
-                                         width = 300, 
-                                         height =300, 
-                                         text = 'IMG TO PDF',
-                                         anchor="center"
+iToPButton = customtkinter.CTkButton(master=root,
+                                     image = image,
+                                     width = 300, 
+                                     height =300,                
                                         )
 
-
-
-
-
 # button placement
-iToPButton.place(relx=0.08, rely=0.25)
+iToPButton.place(relx = 0.5, rely = 0.5, anchor=CENTER)
 
 # run app
 root.mainloop()
