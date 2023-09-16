@@ -32,8 +32,9 @@ for image in images:
 
     aspect_ratio = min(max_width/width, max_height/height)
 
-    # Keeps width and height (max height)
-    # To fill width, take max width instead (dropdown)
+    # Keeps width and height (fill height)
     pdf.image(image_path, w=width*aspect_ratio, h=height*aspect_ratio)
+    # To fill width, take max width instead (dropdown)
+    #pdf.image(image_path, w=max_width, h=height*aspect_ratio)
 
 pdf.output('test.pdf', 'F')
