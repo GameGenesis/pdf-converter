@@ -9,10 +9,10 @@ customtkinter.set_default_color_theme("blue")
 
 # Window
 root = customtkinter.CTk()
-root.title("Mr.Converter")
+root.title("PDF-POOF! Converter")
 
 # Title
-Label(root, text = "Mr.Converter", font=('Roboto', 60)).pack(side=TOP, pady = 10)
+Label(root, text = "PDF-POOF! Converter", font=('Roboto', 60)).pack(side=TOP, pady = 10)
 
 # Image
 image = PhotoImage(file = "Button_Image3.png")
@@ -29,7 +29,10 @@ frame = customtkinter.CTkFrame(master=root, width=600, height=600)
 iToPButton = customtkinter.CTkButton(master=root,
                                      image = image,
                                      width = 300, 
-                                     height =300,                
+                                     height =300,
+                                     text=("IMG/JPG -> PDF"),
+                                     font=('Roboto',30),
+                                     compound=TOP                
                                         )
 
 # button placement
