@@ -1,6 +1,7 @@
 import os
+import time
 from tkinter import StringVar, TOP, filedialog
-from tkinterdnd2 import TkinterDnD, DND_ALL, DND_FILES
+from tkinterdnd2 import TkinterDnD, DND_FILES
 from PIL import Image, ImageGrab
 import customtkinter
 
@@ -13,7 +14,9 @@ app = Tk()
 app.title("Live Laugh Love PDF Converter")
 app.geometry("800x600")
 
-def displayImages(filePaths):
+filePaths = []
+
+def displayImages():
     index = 0
     max_height = 130
     for path in filePaths:
@@ -26,10 +29,19 @@ def displayImages(filePaths):
         index += 1
 
 def openfile():
-    filePaths = list(filedialog.askopenfilenames(initialdir = "/",title = "Select file",
-                        filetypes = (("PNG Files","*.png"),("JPG Files","*.jpg"),("JPEG Files","*.jpeg"),("All Files","*.*"))))
+    filePaths.extend(list(filedialog.askopenfilenames(initialdir = "/",title = "Select file",
+                        filetypes = (("PNG Files","*.png"),("JPG Files","*.jpg"),("JPEG Files","*.jpeg"),("All Files","*.*")))))
     pathLabel.configure(text=filePaths)
-    displayImages(filePaths)
+    displayImages()
+
+def get_clipboard_image(event):
+    try:
+        img = ImageGrab.grabclipboard()
+        img.save(f"images/clipboard{time.strftime('%Y%m%d%H%M%S')}.jpg")
+        filePaths.append("images/clipboard.jpg")
+        displayImages()
+    except:
+        print("No image on the clipboard")
 
 def get_path(event):
     pathLabel.configure(text=event.data)
@@ -49,5 +61,7 @@ button.dnd_bind("<<Drop>>", get_path)
 
 frame = customtkinter.CTkScrollableFrame(master=app, height=150, corner_radius=10, orientation="horizontal")
 frame.pack(padx=100, pady=20, fill="both")
+
+app.bind('<Control-v>', get_clipboard_image)
 
 app.mainloop()
