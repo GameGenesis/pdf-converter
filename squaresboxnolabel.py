@@ -15,14 +15,15 @@ app.title("Live Laugh Love PDF Converter")
 app.geometry("800x500")
 
 def openfile():
-    return filedialog.askopenfilename(initialdir = "/",title = "Select file",
+    filePath = filedialog.askopenfilename(initialdir = "/",title = "Select file",
                         filetypes = (("PNG Files","*.png"),("JPG Files","*.jpg"),("JPEG Files","*.jpeg"),("All Files","*.*")))
+    pathLabel.configure(text=filePath)
 
 def get_path(event):
-    pathLabel.configure(text = event.data)
+    pathLabel.configure(text=event.data)
 
 buttonPNG = customtkinter.CTkButton(app, width=120, height=50, text="Add PNG files", command=openfile)
-buttonPNG.pack(padx=20, pady=80)
+buttonPNG.pack(padx=20, pady=20)
 
 nameVar = StringVar()
 
