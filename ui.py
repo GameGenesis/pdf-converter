@@ -13,7 +13,7 @@ class Tk(customtkinter.CTk, TkinterDnD.DnDWrapper):
         self.TkdndVersion = TkinterDnD._require(self)
 
 app = Tk()
-app.title("Live Laugh Love PDF Converter")
+app.title("PDF-POOF! Converter")
 app.geometry("800x650")
 
 fileName = f"pdf_{time.strftime('%Y%m%d%H%M%S')}"
