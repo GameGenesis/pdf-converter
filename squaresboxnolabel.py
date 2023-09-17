@@ -1,5 +1,5 @@
 from tkinter import StringVar, TOP, filedialog, ttk
-from tkinterdnd2 import TkinterDnD, DND_ALL
+from tkinterdnd2 import TkinterDnD, DND_ALL, DND_FILES
 import customtkinter
 
 class Tk(customtkinter.CTk, TkinterDnD.DnDWrapper):
@@ -15,22 +15,24 @@ app.title("Live Laugh Love PDF Converter")
 app.geometry("800x500")
 
 def openfile():
-    filePath = filedialog.askopenfilename(initialdir = "/",title = "Select file",
-                        filetypes = (("PNG Files","*.png"),("JPG Files","*.jpg"),("JPEG Files","*.jpeg"),("All Files","*.*")))
-    pathLabel.configure(text=filePath)
+    filePaths = list(filedialog.askopenfilenames(initialdir = "/",title = "Select file",
+                        filetypes = (("PNG Files","*.png"),("JPG Files","*.jpg"),("JPEG Files","*.jpeg"),("All Files","*.*"))))
+    pathLabel.configure(text=filePaths)
 
 def get_path(event):
     pathLabel.configure(text=event.data)
 
-buttonPNG = customtkinter.CTkButton(app, width=120, height=50, text="Add PNG files", command=openfile)
-buttonPNG.pack(padx=20, pady=20)
+custom_font =("Roboto",30,'bold')
+button = customtkinter.CTkButton(app, text="➕ \n\nDrag & Drop or Click Here", corner_radius=10,
+                                 fg_color="grey", height=250, font=custom_font, command=openfile)
+button.pack(expand=False, fill="both", padx=100, pady=30)
 
 nameVar = StringVar()
 
 pathLabel = customtkinter.CTkLabel(app, text="Drag and drop file in the entry box")
 pathLabel.pack(side=TOP)
 
-buttonPNG.drop_target_register(DND_ALL)
-buttonPNG.dnd_bind("<<Drop>>", get_path)
+button.drop_target_register(DND_FILES)
+button.dnd_bind("<<Drop>>", get_path)
 
 app.mainloop()
