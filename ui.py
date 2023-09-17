@@ -5,6 +5,8 @@ from tkinterdnd2 import TkinterDnD, DND_FILES
 from PIL import Image, ImageGrab
 import customtkinter
 
+from pdf import convert_pdf
+
 class Tk(customtkinter.CTk, TkinterDnD.DnDWrapper):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -12,9 +14,13 @@ class Tk(customtkinter.CTk, TkinterDnD.DnDWrapper):
 
 app = Tk()
 app.title("Live Laugh Love PDF Converter")
-app.geometry("800x600")
+app.geometry("800x650")
 
+fileName = f"pdf_{time.strftime('%Y%m%d%H%M%S')}"
 filePaths = []
+
+def convert():
+    convert_pdf(filePaths, fileName)
 
 def displayImages():
     index = 0
@@ -28,17 +34,27 @@ def displayImages():
         label.grid(column=index, row=0, padx=5, pady=10)
         index += 1
 
-def openfile():
+def openFile():
     filePaths.extend(list(filedialog.askopenfilenames(initialdir = "/",title = "Select file",
                         filetypes = (("PNG Files","*.png"),("JPG Files","*.jpg"),("JPEG Files","*.jpeg"),("All Files","*.*")))))
     pathLabel.configure(text=filePaths)
     displayImages()
 
+def saveFile():
+    if len(filePaths) < 1:
+        print("No images selected")
+        return
+
+    path = filedialog.asksaveasfilename(filetypes=[("PDF File", "*.pdf")])
+    print(path)
+    convert_pdf(filePaths, path)
+
 def get_clipboard_image(event):
     try:
         img = ImageGrab.grabclipboard()
-        img.save(f"images/clipboard{time.strftime('%Y%m%d%H%M%S')}.jpg")
-        filePaths.append("images/clipboard.jpg")
+        img_path = f"images/clipboard_{time.strftime('%Y%m%d%H%M%S')}.jpg"
+        img.save(img_path)
+        filePaths.append(img_path)
         displayImages()
     except:
         print("No image on the clipboard")
@@ -48,7 +64,7 @@ def get_path(event):
 
 custom_font =("Arial",30,'bold')
 button = customtkinter.CTkButton(app, text="➕ \n\nDrag & Drop or Click Here", corner_radius=10,
-                                height=250, font=custom_font, command=openfile)
+                                height=250, font=custom_font, command=openFile)
 button.pack(expand=False, fill="both", padx=100, pady=30)
 
 nameVar = StringVar()
@@ -61,6 +77,9 @@ button.dnd_bind("<<Drop>>", get_path)
 
 frame = customtkinter.CTkScrollableFrame(master=app, height=150, corner_radius=10, orientation="horizontal")
 frame.pack(padx=100, pady=20, fill="both")
+
+saveButton = customtkinter.CTkButton(app, width=120, height=50, text="Convert", command=saveFile)
+saveButton.pack(padx=20, pady=20)
 
 app.bind('<Control-v>', get_clipboard_image)
 
